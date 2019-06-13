@@ -11,11 +11,12 @@
 		FB242BAB22B228C500F3118E /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB242BAA22B228C500F3118E /* AudioRecorder.swift */; };
 		FB242BAD22B2541D00F3118E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB242BAC22B2541D00F3118E /* Constants.swift */; };
 		FB24E94322B12FA5004115E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E94222B12FA5004115E2 /* AppDelegate.swift */; };
-		FB24E94522B12FA5004115E2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E94422B12FA5004115E2 /* ViewController.swift */; };
 		FB24E94822B12FA5004115E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB24E94622B12FA5004115E2 /* Main.storyboard */; };
 		FB24E94A22B12FA7004115E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB24E94922B12FA7004115E2 /* Assets.xcassets */; };
 		FB24E94D22B12FA7004115E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB24E94B22B12FA7004115E2 /* LaunchScreen.storyboard */; };
 		FB24E95822B12FA7004115E2 /* RecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E95722B12FA7004115E2 /* RecorderTests.swift */; };
+		FB24E96622B13C08004115E2 /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E96522B13C08004115E2 /* RecordingViewController.swift */; };
+		FB24E97222B15972004115E2 /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E97122B15972004115E2 /* RecordingViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,6 @@
 		FB242BAC22B2541D00F3118E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FB24E93F22B12FA5004115E2 /* Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB24E94222B12FA5004115E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FB24E94422B12FA5004115E2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FB24E94722B12FA5004115E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FB24E94922B12FA7004115E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB24E94C22B12FA7004115E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -44,6 +44,8 @@
 		FB24E95322B12FA7004115E2 /* RecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB24E95722B12FA7004115E2 /* RecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderTests.swift; sourceTree = "<group>"; };
 		FB24E95922B12FA7004115E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB24E96522B13C08004115E2 /* RecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewController.swift; sourceTree = "<group>"; };
+		FB24E97122B15972004115E2 /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,12 +123,14 @@
 		FB24E94122B12FA5004115E2 /* Recorder */ = {
 			isa = PBXGroup;
 			children = (
+				FB242BB122B2856D00F3118E /* Logic */,
+				FB24E96422B13BE2004115E2 /* Recording */,
 				FB24E94222B12FA5004115E2 /* AppDelegate.swift */,
-				FB24E94422B12FA5004115E2 /* ViewController.swift */,
 				FB24E94622B12FA5004115E2 /* Main.storyboard */,
 				FB24E94922B12FA7004115E2 /* Assets.xcassets */,
 				FB24E94B22B12FA7004115E2 /* LaunchScreen.storyboard */,
 				FB24E94E22B12FA7004115E2 /* Info.plist */,
+				FB242BB022B2855F00F3118E /* Resources */,
 			);
 			path = Recorder;
 			sourceTree = "<group>";
@@ -138,6 +142,15 @@
 				FB24E95922B12FA7004115E2 /* Info.plist */,
 			);
 			path = RecorderTests;
+			sourceTree = "<group>";
+		};
+		FB24E96422B13BE2004115E2 /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				FB24E97122B15972004115E2 /* RecordingViewModel.swift */,
+				FB24E96522B13C08004115E2 /* RecordingViewController.swift */,
+			);
+			path = Recording;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,7 +298,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB24E94522B12FA5004115E2 /* ViewController.swift in Sources */,
+				FB24E97222B15972004115E2 /* RecordingViewModel.swift in Sources */,
+				FB24E96622B13C08004115E2 /* RecordingViewController.swift in Sources */,
 				FB24E94322B12FA5004115E2 /* AppDelegate.swift in Sources */,
 				FB242BAB22B228C500F3118E /* AudioRecorder.swift in Sources */,
 				FB242BAD22B2541D00F3118E /* Constants.swift in Sources */,
