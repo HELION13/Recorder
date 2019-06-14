@@ -9,7 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 final class PlaybackViewController: UIViewController {
     private var trackVolumeCollectionView: UICollectionView = {
@@ -57,7 +56,6 @@ final class PlaybackViewController: UIViewController {
     }()
         
     var viewModel: PlaybackViewModel?
-    private var dataSource: RxCollectionViewSectionedAnimatedDataSource<PlaybackVisualSection>!
         
     private let disposeBag = DisposeBag()
         
@@ -113,13 +111,6 @@ final class PlaybackViewController: UIViewController {
         
         guard let viewModel = viewModel else { return }
         
-        let animationConfiguration = AnimationConfiguration(insertAnimation: .bottom,
-                                                            reloadAnimation: .fade,
-                                                            deleteAnimation: .bottom)
-        
-        dataSource = RxCollectionViewSectionedAnimatedDataSource<PlaybackVisualSection>(animationConfiguration: animationConfiguration,
-                                                                     configureCell: configureCell)
-        
         playButton.rx.tap
             .map { PlaybackViewAction.playTapped }
             .bind(to: viewModel.actionRelay)
@@ -131,7 +122,19 @@ final class PlaybackViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.playbackStateDriver
-            .drive(trackVolumeCollectionView.rx.items(dataSource: dataSource))
+            .drive(onNext: { [weak self] action in
+                guard let self = self else { return }
+                
+                switch action {
+                case .reloadAll:
+                    self.trackVolumeCollectionView.reloadData()
+                case .reload(at: let index):
+                    let indexPath = IndexPath(row: index, section: 0)
+                    let cell = self.trackVolumeCollectionView.cellForItem(at: indexPath) as? PlaybackSoundValueCollectionViewCell
+                    cell?.updatePlayedState(true)
+                    self.trackVolumeCollectionView.scrollToItem(at: indexPath, at: .right, animated: false)
+                }
+            })
             .disposed(by: disposeBag)
         
         viewModel.viewStateDriver
@@ -144,17 +147,26 @@ final class PlaybackViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        trackVolumeCollectionView.dataSource = self
         trackVolumeCollectionView.delegate = self
         
         viewModel.actionRelay.accept(.didLoad)
     }
+}
+
+// MARK: - Collection View Data Source
+extension PlaybackViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
     
-    private func configureCell(dataSource: CollectionViewSectionedDataSource<PlaybackVisualSection>,
-                               collectionView: UICollectionView,
-                               indexPath: IndexPath,
-                               item: PlaybackVisualUnit) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel?.values.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "soundValueCell", for: indexPath) as! PlaybackSoundValueCollectionViewCell
-        cell.updatePlayedState(item.played)
+        cell.updatePlayedState(viewModel?.values[indexPath.row].played ?? false)
         
         return cell
     }
@@ -163,8 +175,9 @@ final class PlaybackViewController: UIViewController {
 // MARK: - Collection View Flow Layout Delegate
 extension PlaybackViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let section = dataSource.sectionModels[0]
-        let item = section.items[indexPath.row]
+        guard let viewModel = viewModel else { return CGSize.zero }
+        
+        let item = viewModel.values[indexPath.row]
         
         return CGSize(width: 1.0, height: 50.0 * Double(item.soundValue))
     }

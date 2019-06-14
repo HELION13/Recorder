@@ -8,12 +8,11 @@
 
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 final class BasicPlaybackViewModel: PlaybackViewModel {
     let actionRelay = PublishRelay<PlaybackViewAction>()
     private let viewStateRelay = BehaviorRelay<PlaybackViewState>(value: .default)
-    private let playbackStateRelay = BehaviorRelay<[PlaybackVisualSection]>(value: [.default])
+    private let playbackStateRelay = BehaviorRelay<PlaybackUpdateAction>(value: .reloadAll)
     
     var viewStateDriver: Driver<PlaybackViewState> {
         return viewStateRelay
@@ -21,21 +20,21 @@ final class BasicPlaybackViewModel: PlaybackViewModel {
             .startWith(.default)
     }
     
-    var playbackStateDriver: Driver<[PlaybackVisualSection]> {
+    var playbackStateDriver: Driver<PlaybackUpdateAction> {
         return playbackStateRelay
-            .asDriver(onErrorJustReturn: [PlaybackVisualSection.default])
-            .startWith([.default])
+            .asDriver(onErrorJustReturn: .reloadAll)
+            .startWith(.reloadAll)
     }
     
+    var values: [PlaybackVisualUnit] = []
+    
     private let player: AudioPlayer
-    private let initialSection: PlaybackVisualSection
     
     private let disposeBag = DisposeBag()
     
     init(player: AudioPlayer, soundValues: [Float]) {
         self.player = player
-        let units = soundValues.map { PlaybackVisualUnit(soundValue: $0, played: false) }
-        initialSection = PlaybackVisualSection(items: units)
+        values = soundValues.map { PlaybackVisualUnit(soundValue: $0, played: false) }
         
         actionRelay
             .bind(onNext: { [weak self] action in
@@ -46,7 +45,7 @@ final class BasicPlaybackViewModel: PlaybackViewModel {
                     player.isPlaying ? self.handlePause() :
                         self.handlePlay()
                 case .stopTapped:
-                    break
+                    self.handleStop()
                 case .didLoad:
                     self.handleDidLoad()
                 }
@@ -55,7 +54,7 @@ final class BasicPlaybackViewModel: PlaybackViewModel {
     }
     
     private func handleDidLoad() {
-        self.playbackStateRelay.accept([self.initialSection])
+        self.playbackStateRelay.accept(.reloadAll)
         
         player.initializePlayer
             .map { _ -> PlaybackViewState in
@@ -72,6 +71,12 @@ final class BasicPlaybackViewModel: PlaybackViewModel {
     
     private func handlePlay() {
         player.play
+            .do(onSubscribe: { [weak self] in
+                guard let self = self else { return }
+                
+                self.values = self.values.map { PlaybackVisualUnit(soundValue: $0.soundValue, played: false) }
+                self.playbackStateRelay.accept(.reloadAll)
+            })
             .subscribe(onNext: { [weak self] state in
                 guard let self = self else { return }
                 
@@ -82,12 +87,11 @@ final class BasicPlaybackViewModel: PlaybackViewModel {
                 
                 self.viewStateRelay.accept(viewState)
                 
-//                let index = Int(state.duration * (1.0 / Constants.checkInterval))
-//                var section = self.playbackStateRelay.value[0]
-//                guard index < section.items.count else { return }
-//                
-//                section.items[index].played = true
-//                self.playbackStateRelay.accept([section])
+                let index = Int(state.duration * (1.0 / Constants.checkInterval))
+                guard index < self.values.count else { return }
+                
+                self.values[index].played = true
+                self.playbackStateRelay.accept(.reload(at: index))
             }, onError: { [weak self] error in
                 debugPrint(error.localizedDescription)
                 self?.viewStateRelay.accept(.default)
@@ -104,6 +108,16 @@ final class BasicPlaybackViewModel: PlaybackViewModel {
         let state = PlaybackViewState(duration: viewStateRelay.value.duration,
                                       playButtonText: "Play",
                                       stopButtonEnabled: viewStateRelay.value.stopButtonEnabled)
+        
+        viewStateRelay.accept(state)
+    }
+    
+    private func handleStop() {
+        player.stop()
+        
+        let state = PlaybackViewState(duration: viewStateRelay.value.duration,
+                                      playButtonText: "Play",
+                                      stopButtonEnabled: false)
         
         viewStateRelay.accept(state)
     }

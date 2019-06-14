@@ -6,5 +6,4 @@ target 'Recorder' do
     
     pod 'RxSwift', '~> 5.0'
     pod 'RxCocoa', '~> 5.0'
-    pod 'RxDataSources', '~> 4.0'
 end
