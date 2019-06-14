@@ -28,7 +28,6 @@ final class RecordingViewController: UIViewController {
     
     private var recordButton: UIButton = {
         let button = UIButton(type: .system)
-        button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -50,7 +49,15 @@ final class RecordingViewController: UIViewController {
         return button
     }()
     
-    var viewModel: RecordingViewModel? = BasicRecordingViewModel(recorder: DefaultRecorder())
+    private var playRecordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Play Record", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    var viewModel: RecordingViewModel?
     
     private let disposeBag = DisposeBag()
     
@@ -61,7 +68,10 @@ final class RecordingViewController: UIViewController {
     }
     
     private func prepareLayout() {
-        let container = UIStackView(arrangedSubviews: [recordingProgress, durationLabel, recordButton, fileNameLabel, saveButton])
+        view.backgroundColor = .white
+        title = "Record"
+        
+        let container = UIStackView(arrangedSubviews: [recordingProgress, durationLabel, recordButton, fileNameLabel, saveButton, playRecordButton])
         container.translatesAutoresizingMaskIntoConstraints = false
         container.axis = .vertical
         container.alignment = .center
@@ -93,6 +103,11 @@ final class RecordingViewController: UIViewController {
             .bind(to: viewModel.actionRelay)
             .disposed(by: disposeBag)
         
+        playRecordButton.rx.tap
+            .map { RecordingViewAction.playRecordTapped }
+            .bind(to: viewModel.actionRelay)
+            .disposed(by: disposeBag)
+        
         //add show record button
         
         viewModel.actionRelay.accept(.didLoad)
@@ -108,6 +123,7 @@ final class RecordingViewController: UIViewController {
                 self.fileNameLabel.text = state.recordName
                 self.fileNameLabel.isHidden = state.recordName == nil
                 self.saveButton.isHidden = !state.saveRecordVisible
+                self.playRecordButton.isHidden = !state.playRecordVisible
             })
             .disposed(by: disposeBag)
     }

@@ -12,10 +12,20 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var mainCoordinator: MainCoordinator!
+    let dependencyContainer = DependencyContainer()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let w = UIWindow(frame: UIScreen.main.bounds)
+        let nav = UINavigationController()
+        let router = MainRouter(navigationController: nav)
+        mainCoordinator = MainCoordinator(router: router, container: dependencyContainer)
+        w.rootViewController = nav
+        w.makeKeyAndVisible()
+        window = w
+        mainCoordinator.start()
+        
         return true
     }
 

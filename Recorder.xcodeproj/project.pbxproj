@@ -10,13 +10,22 @@
 		F7227D601237B23AA658451B /* Pods_Recorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332D5F06BB7E20D1E3A5160D /* Pods_Recorder.framework */; };
 		FB242BAB22B228C500F3118E /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB242BAA22B228C500F3118E /* AudioRecorder.swift */; };
 		FB242BAD22B2541D00F3118E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB242BAC22B2541D00F3118E /* Constants.swift */; };
+		FB242BB322B2A15E00F3118E /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB242BB222B2A15E00F3118E /* AudioPlayer.swift */; };
 		FB24E94322B12FA5004115E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E94222B12FA5004115E2 /* AppDelegate.swift */; };
-		FB24E94822B12FA5004115E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB24E94622B12FA5004115E2 /* Main.storyboard */; };
 		FB24E94A22B12FA7004115E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB24E94922B12FA7004115E2 /* Assets.xcassets */; };
 		FB24E94D22B12FA7004115E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB24E94B22B12FA7004115E2 /* LaunchScreen.storyboard */; };
 		FB24E95822B12FA7004115E2 /* RecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E95722B12FA7004115E2 /* RecorderTests.swift */; };
 		FB24E96622B13C08004115E2 /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E96522B13C08004115E2 /* RecordingViewController.swift */; };
 		FB24E97222B15972004115E2 /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24E97122B15972004115E2 /* RecordingViewModel.swift */; };
+		FB268C4A22B378650003FB53 /* PlaybackSoundValueCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268C4922B378650003FB53 /* PlaybackSoundValueCollectionViewCell.swift */; };
+		FB268C4C22B37DC30003FB53 /* TrackCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268C4B22B37DC30003FB53 /* TrackCollectionViewFlowLayout.swift */; };
+		FB268C4E22B384790003FB53 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268C4D22B384790003FB53 /* MainCoordinator.swift */; };
+		FB268C5022B384850003FB53 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268C4F22B384850003FB53 /* MainRouter.swift */; };
+		FB268C5222B38BE40003FB53 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268C5122B38BE40003FB53 /* DependencyContainer.swift */; };
+		FB268C5422B38D880003FB53 /* PlaybackContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268C5322B38D880003FB53 /* PlaybackContract.swift */; };
+		FB2A483B22B2C83300BDC012 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2A483A22B2C83300BDC012 /* PlaybackViewController.swift */; };
+		FB2A483D22B2D15600BDC012 /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2A483C22B2D15600BDC012 /* PlaybackViewModel.swift */; };
+		FB2AA8AC22B3605E00644AE4 /* RecordingContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2AA8AB22B3605E00644AE4 /* RecordingContract.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,9 +44,9 @@
 		D08CFA879AB5F893FD3C4584 /* Pods-Recorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recorder.release.xcconfig"; path = "Target Support Files/Pods-Recorder/Pods-Recorder.release.xcconfig"; sourceTree = "<group>"; };
 		FB242BAA22B228C500F3118E /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		FB242BAC22B2541D00F3118E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FB242BB222B2A15E00F3118E /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		FB24E93F22B12FA5004115E2 /* Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB24E94222B12FA5004115E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FB24E94722B12FA5004115E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FB24E94922B12FA7004115E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB24E94C22B12FA7004115E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB24E94E22B12FA7004115E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -46,6 +55,15 @@
 		FB24E95922B12FA7004115E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB24E96522B13C08004115E2 /* RecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewController.swift; sourceTree = "<group>"; };
 		FB24E97122B15972004115E2 /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
+		FB268C4922B378650003FB53 /* PlaybackSoundValueCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackSoundValueCollectionViewCell.swift; sourceTree = "<group>"; };
+		FB268C4B22B37DC30003FB53 /* TrackCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		FB268C4D22B384790003FB53 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		FB268C4F22B384850003FB53 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
+		FB268C5122B38BE40003FB53 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
+		FB268C5322B38D880003FB53 /* PlaybackContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackContract.swift; sourceTree = "<group>"; };
+		FB2A483A22B2C83300BDC012 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
+		FB2A483C22B2D15600BDC012 /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
+		FB2AA8AB22B3605E00644AE4 /* RecordingContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingContract.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +114,29 @@
 			isa = PBXGroup;
 			children = (
 				FB242BAA22B228C500F3118E /* AudioRecorder.swift */,
+				FB242BB222B2A15E00F3118E /* AudioPlayer.swift */,
 			);
 			path = Logic;
+			sourceTree = "<group>";
+		};
+		FB242BB422B2AC2100F3118E /* Playback */ = {
+			isa = PBXGroup;
+			children = (
+				FB268C4822B3783D0003FB53 /* Components */,
+				FB2A483C22B2D15600BDC012 /* PlaybackViewModel.swift */,
+				FB2A483A22B2C83300BDC012 /* PlaybackViewController.swift */,
+				FB268C5322B38D880003FB53 /* PlaybackContract.swift */,
+			);
+			path = Playback;
+			sourceTree = "<group>";
+		};
+		FB242BB522B2AC3100F3118E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				FB242BB422B2AC2100F3118E /* Playback */,
+				FB24E96422B13BE2004115E2 /* Recording */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		FB24E93622B12FA5004115E2 = {
@@ -124,13 +163,15 @@
 			isa = PBXGroup;
 			children = (
 				FB242BB122B2856D00F3118E /* Logic */,
-				FB24E96422B13BE2004115E2 /* Recording */,
+				FB242BB522B2AC3100F3118E /* Presentation */,
 				FB24E94222B12FA5004115E2 /* AppDelegate.swift */,
-				FB24E94622B12FA5004115E2 /* Main.storyboard */,
 				FB24E94922B12FA7004115E2 /* Assets.xcassets */,
 				FB24E94B22B12FA7004115E2 /* LaunchScreen.storyboard */,
 				FB24E94E22B12FA7004115E2 /* Info.plist */,
 				FB242BB022B2855F00F3118E /* Resources */,
+				FB268C4D22B384790003FB53 /* MainCoordinator.swift */,
+				FB268C4F22B384850003FB53 /* MainRouter.swift */,
+				FB268C5122B38BE40003FB53 /* DependencyContainer.swift */,
 			);
 			path = Recorder;
 			sourceTree = "<group>";
@@ -149,8 +190,18 @@
 			children = (
 				FB24E97122B15972004115E2 /* RecordingViewModel.swift */,
 				FB24E96522B13C08004115E2 /* RecordingViewController.swift */,
+				FB2AA8AB22B3605E00644AE4 /* RecordingContract.swift */,
 			);
 			path = Recording;
+			sourceTree = "<group>";
+		};
+		FB268C4822B3783D0003FB53 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FB268C4922B378650003FB53 /* PlaybackSoundValueCollectionViewCell.swift */,
+				FB268C4B22B37DC30003FB53 /* TrackCollectionViewFlowLayout.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,7 +289,6 @@
 			files = (
 				FB24E94D22B12FA7004115E2 /* LaunchScreen.storyboard in Resources */,
 				FB24E94A22B12FA7004115E2 /* Assets.xcassets in Resources */,
-				FB24E94822B12FA5004115E2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,11 +348,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB268C5222B38BE40003FB53 /* DependencyContainer.swift in Sources */,
+				FB2AA8AC22B3605E00644AE4 /* RecordingContract.swift in Sources */,
+				FB268C5422B38D880003FB53 /* PlaybackContract.swift in Sources */,
+				FB268C4E22B384790003FB53 /* MainCoordinator.swift in Sources */,
 				FB24E97222B15972004115E2 /* RecordingViewModel.swift in Sources */,
 				FB24E96622B13C08004115E2 /* RecordingViewController.swift in Sources */,
 				FB24E94322B12FA5004115E2 /* AppDelegate.swift in Sources */,
+				FB268C5022B384850003FB53 /* MainRouter.swift in Sources */,
 				FB242BAB22B228C500F3118E /* AudioRecorder.swift in Sources */,
+				FB268C4C22B37DC30003FB53 /* TrackCollectionViewFlowLayout.swift in Sources */,
 				FB242BAD22B2541D00F3118E /* Constants.swift in Sources */,
+				FB2A483D22B2D15600BDC012 /* PlaybackViewModel.swift in Sources */,
+				FB2A483B22B2C83300BDC012 /* PlaybackViewController.swift in Sources */,
+				FB242BB322B2A15E00F3118E /* AudioPlayer.swift in Sources */,
+				FB268C4A22B378650003FB53 /* PlaybackSoundValueCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,14 +385,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		FB24E94622B12FA5004115E2 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FB24E94722B12FA5004115E2 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FB24E94B22B12FA7004115E2 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

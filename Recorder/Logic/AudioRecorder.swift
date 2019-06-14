@@ -13,9 +13,9 @@ import RxSwift
 protocol AudioRecorder {
     var isRecording: Bool { get }
     var initializeRecorder: Single<Void> { get }
-    var startRecording: Observable<RecordingState> { get }
+    var record: Observable<RecordingState> { get }
     var saveRecord: Single<URL> { get }
-    func stopRecording()
+    func stop()
 }
 
 enum RecorderError: Error {
@@ -27,40 +27,43 @@ enum RecorderError: Error {
 
 struct RecordingState {
     let duration: TimeInterval
-    let loudness: Float
+    let soundLevel: Float
 }
 
 class DefaultRecorder: NSObject, AudioRecorder {
     private var recorder: AVAudioRecorder?
     private let scheduler = SerialDispatchQueueScheduler(qos: .userInitiated)
+    private let recordingSubject = PublishSubject<RecordingState>()
+    private let requestPermission: Single<Void>
+    private let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                            AVSampleRateKey: 12000,
+                            AVNumberOfChannelsKey: 1,
+                            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
     
     var isRecording: Bool {
         return recorder?.isRecording ?? false
     }
     
-    private let requestPermission: Single<Void>
     private(set) var initializeRecorder: Single<Void>
     private(set) var saveRecord: Single<URL>
     
-    var startRecording: Observable<RecordingState> {
+    var record: Observable<RecordingState> {
         guard let recorder = recorder else {
             return Observable.empty()
         }
         
         let checkStateObserable = Observable<Int>.interval(Constants.checkInterval, scheduler: scheduler)
-            .takeWhile { [weak self] iteration in
-                guard let self = self else { return false }
-                
+            .takeWhile { iteration in
                 let timeRemaining = Double(iteration) < Constants.maxRecordingDuration * (1.0 / Constants.checkInterval)
-                
-                return timeRemaining && self.isRecording
+
+                return timeRemaining && recorder.isRecording
             }
             .map { _ -> RecordingState in
                 recorder.updateMeters()
-                let clampedValue = min(max(-160.0, recorder.averagePower(forChannel: 0)), 0.0)
-                let normalizedValue = Float((clampedValue + 160.0) / 160.0)
+                let clampedValue = min(max(-120.0, recorder.averagePower(forChannel: 0)), 0.0)
+                let normalizedValue = Float((clampedValue + 120.0) / 120.0)
                 
-                let state = RecordingState(duration: recorder.currentTime, loudness: normalizedValue)
+                let state = RecordingState(duration: recorder.currentTime, soundLevel: normalizedValue)
                 
                 return state
             }
@@ -71,19 +74,6 @@ class DefaultRecorder: NSObject, AudioRecorder {
         
         return Observable.merge(recordingSubject, checkStateObserable)
     }
-    
-    private let recordingSubject = PublishSubject<RecordingState>()
-    private let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                            AVSampleRateKey: 12000,
-                            AVNumberOfChannelsKey: 1,
-                            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
-    
-    private var tempDirectory: URL = {
-        let fileManager = FileManager.default
-        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentDirectory = urls.first!
-        return documentDirectory.appendingPathComponent("tempRecording.m4a")
-    }()
     
     override init() {
         requestPermission = Single<Void>.create { observer in
@@ -122,7 +112,7 @@ class DefaultRecorder: NSObject, AudioRecorder {
                 try session.overrideOutputAudioPort(.speaker)
                 try session.setActive(true)
                 
-                try self.recorder = AVAudioRecorder(url: self.tempDirectory, settings: self.settings)
+                try self.recorder = AVAudioRecorder(url: Constants.tempDirectory, settings: self.settings)
                 self.recorder?.delegate = self
                 self.recorder?.isMeteringEnabled = true
                 
@@ -134,13 +124,7 @@ class DefaultRecorder: NSObject, AudioRecorder {
             }
         }
         
-        saveRecord = Single<URL>.create { [weak self] single in
-            guard let self = self else {
-                single(.error(RecorderError.savingError("No self")))
-                
-                return Disposables.create()
-            }
-            
+        saveRecord = Single<URL>.create { single in
             let fileManager = FileManager.default
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MMM-dd_hh:mm:ss"
@@ -149,7 +133,7 @@ class DefaultRecorder: NSObject, AudioRecorder {
             do {
                 let url = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 targetUrl = url.appendingPathComponent("Record_\(formatter.string(from: Date()))").appendingPathExtension("m4a")
-                try fileManager.copyItem(at: self.tempDirectory, to: targetUrl)
+                try fileManager.copyItem(at: Constants.tempDirectory, to: targetUrl)
             } catch {
                 single(.error(RecorderError.savingError(error.localizedDescription)))
             }
@@ -160,7 +144,7 @@ class DefaultRecorder: NSObject, AudioRecorder {
         }
     }
     
-    func stopRecording() {
+    func stop() {
         recorder?.stop()
     }
 }
